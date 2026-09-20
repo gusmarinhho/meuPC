@@ -1,13 +1,36 @@
 services:
-  web:
-    image: nginx:alpine
-    ports:
-      - "3000:80"
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=gusmarinho
+      - POSTGRES_PASSWORD=gusmarinho
+      - POSTGRES_DB=gusmarinho
     volumes:
-      - ./:/usr/share/nginx/html:ro
-      - ./.base44/nginx.conf:/etc/nginx/nginx.conf:ro
+      - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U gusmarinho"]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+
+  api:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://gusmarinho:gusmarinho@db:5432/gusmarinho
+      - DATABASE_SSL=false
+      - PORT=3000
+    env_file:
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npm install --omit=dev 2>/dev/null; npx nodemon server.js"
+
+volumes:
+  pgdata:

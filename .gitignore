@@ -5,6 +5,7 @@ dist/
 build/
 .env
 .env.*
+!.env.base44-defaults
 *.log
 .vscode/
 .idea/
