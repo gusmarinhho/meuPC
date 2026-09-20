@@ -1,26 +1,21 @@
 {
-  "name": "itsurge-admin-pro",
+  "name": "gusmarinho",
   "version": "1.0.0",
-  "description": "Premium bilingual HTML/CSS/JS admin dashboard template with Persian RTL and English LTR layouts.",
-  "private": false,
-  "license": "MIT",
-  "homepage": "https://smael-aftersearch.github.io/itsurge-admin-pro/index.html",
+  "description": "GUSMARINHO - Contador Online",
+  "private": true,
   "scripts": {
-    "start": "python -m http.server 8080",
-    "serve": "python -m http.server 8080"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "keywords": [
-    "admin-dashboard",
-    "admin-template",
-    "dashboard-template",
-    "html-css-js",
-    "ui-kit",
-    "rtl-dashboard",
-    "persian-dashboard",
-    "saas-dashboard",
-    "crm-dashboard",
-    "admin-panel",
-    "responsive-template",
-    "frontend-template"
-  ]
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
 }
