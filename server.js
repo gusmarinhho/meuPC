@@ -18,7 +18,7 @@ app.use(express.static(__dirname));
 
 // ---------- Banco de Dados ----------
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://lotofacil:lotofacil@localhost:5432/lotofacil',
+  connectionString: process.env.DATABASE_URL || 'postgresql://contabil_m9rq_user:rrmF4JhFt46yzAqboawmWJWrRaT0QUZQ@dpg-danue0bm8hqs73cjr6pg-a/contabil_m9rq',
   ssl: process.env.DATABASE_SSL === 'false' ? false : { rejectUnauthorized: false }
 });
 
