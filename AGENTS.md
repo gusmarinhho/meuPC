@@ -7,7 +7,8 @@ Plataforma Lotofácil Pro — Simulador/Conferidor, Geradores com Filtros, Fecha
 - `db` service: postgres:16-alpine. Tables auto-created on startup via `criarTabelas()`. Sample concursos seeded if empty.
 - `api` service: node:22, bind-mounted at /app, runs `npx nodemon server.js` (live reload). Serves static HTML + API on port 3000.
 - Start: `docker compose -f docker-compose.base44.yml up -d`
-- Dependencies install automatically via `npm install` in the container.
+- Dependencies install automatically via `npm install` in the container. Use the dedicated `base44_lotofacil_pgdata` volume: the former compose volume contains an unrelated PostgreSQL cluster with no `lotofacil` role. Do not delete that older volume.
+- The Caixa servicebus endpoint can return HTTP 403 from this sandbox; the Simulador's manual import saves a supplied numbered draw via `/api/concursos` and refreshes the selection. Do not treat seeded sample draws as verified official results.
 
 ## Environment
 - `DATABASE_URL`: local PostgreSQL (compose `environment:`).

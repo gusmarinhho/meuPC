@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Painel · Lotofácil Pro</title>
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/app.js"></script>
 </head>
 <body data-page="index">
 <script>if(!requireAuth()){}</script>
@@ -63,7 +64,6 @@
     </div>
   </div>
 </div>
-<script src="assets/js/app.js"></script>
 <script>
 async function carregarPainel() {
   try {
@@ -95,7 +95,7 @@ async function atualizarSorteio() {
     el('alert-area').innerHTML = alertBox(`Sorteio atualizado! Concurso ${data.concurso.numero}.`, 'success');
     carregarPainel();
   } catch (err) {
-    el('alert-area').innerHTML = alertBox('Não foi possível buscar automaticamente. ' + err.message + ' Use a importação manual na aba Simulador.', 'warning');
+    el('alert-area').innerHTML = '<div class="alert alert-warning">Não foi possível buscar o sorteio oficial agora. <a href="simulador.html">Importe o sorteio manualmente no Simulador →</a></div>';
   }
 }
 

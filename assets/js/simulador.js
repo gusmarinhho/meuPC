@@ -107,6 +107,41 @@ function usarJogoSalvo(dezenas) {
   renderJogos();
 }
 
+function lerDezenasManuais() {
+  const texto = el('sorteio-manual').value.trim();
+  const partes = texto.split(/[\s,;]+/);
+  const dezenas = partes.map(Number);
+  if (!texto || dezenas.length !== 15 || dezenas.some(n => !Number.isInteger(n) || n < 1 || n > 25) || new Set(dezenas).size !== 15) {
+    el('alert-area').innerHTML = alertBox('Sorteio manual inválido: informe 15 dezenas únicas de 1 a 25.', 'error');
+    return null;
+  }
+  return dezenas;
+}
+
+async function importarConcurso() {
+  const numero = Number(el('numero-concurso-manual').value);
+  if (!Number.isSafeInteger(numero) || numero < 1) {
+    el('alert-area').innerHTML = alertBox('Informe um número de concurso válido para importar.', 'error');
+    return;
+  }
+  const dezenas = lerDezenasManuais();
+  if (!dezenas) return;
+  const data_sorteio = el('data-concurso-manual').value || null;
+  try {
+    await API.post('/api/concursos', { numero, data_sorteio, dezenas });
+    await carregarConcursos();
+    const sel = el('sel-concurso');
+    if (![...sel.options].some(option => option.value === String(numero))) {
+      sel.add(new Option(`Concurso ${numero} — ${fmt(data_sorteio)}`, String(numero)), 1);
+    }
+    sel.value = String(numero);
+    el('sorteio-manual').value = '';
+    el('alert-area').innerHTML = alertBox(`Concurso ${numero} importado! Selecione seus jogos e confira.`, 'success');
+  } catch (err) {
+    el('alert-area').innerHTML = alertBox(err.message, 'error');
+  }
+}
+
 async function conferir() {
   if (!meusJogos.length) {
     el('alert-area').innerHTML = alertBox('Adicione ao menos um jogo para conferir.', 'warning');
@@ -116,11 +151,8 @@ async function conferir() {
   const manual = el('sorteio-manual').value.trim();
   let dezenasSorteio = null;
   if (manual) {
-    dezenasSorteio = manual.split(/[\s,;]+/).map(Number).filter(n => n >= 1 && n <= 25);
-    if (dezenasSorteio.length !== 15 || new Set(dezenasSorteio).size !== 15) {
-      el('alert-area').innerHTML = alertBox('Sorteio manual inválido: informe 15 dezenas únicas de 1 a 25.', 'error');
-      return;
-    }
+    dezenasSorteio = lerDezenasManuais();
+    if (!dezenasSorteio) return;
   }
   el('alert-area').innerHTML = alertBox('Conferindo...', 'info');
   try {

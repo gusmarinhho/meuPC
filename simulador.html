@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulador & Conferidor · Lotofácil Pro</title>
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/app.js"></script>
 </head>
 <body data-page="simulador">
 <script>if(!requireAuth()){}</script>
@@ -60,9 +61,20 @@
               <select class="form-select" id="sel-concurso"><option value="">Último concurso</option></select>
             </div>
             <div class="form-group">
-              <label class="form-label">Ou digite o resultado manualmente (15 dezenas)</label>
+              <label class="form-label" for="sorteio-manual">Ou digite o resultado manualmente (15 dezenas)</label>
               <input type="text" class="form-input" id="sorteio-manual" placeholder="Ex: 1 5 7 10 12 14 15 16 18 20 22 24 25 3 9">
             </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="numero-concurso-manual">Número do concurso para importar</label>
+                <input type="number" class="form-input" id="numero-concurso-manual" min="1" step="1" placeholder="Ex: 3301">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="data-concurso-manual">Data do sorteio (opcional)</label>
+                <input type="date" class="form-input" id="data-concurso-manual">
+              </div>
+            </div>
+            <button class="btn btn-outline btn-block" style="margin-bottom:12px" onclick="importarConcurso()">📥 Importar sorteio manualmente</button>
             <button class="btn btn-gold btn-block btn-lg" onclick="conferir()">🎯 CONFERIR TUDO</button>
           </div>
         </div>
@@ -96,7 +108,6 @@
     <div id="modal-salvos-content"></div>
   </div>
 </div>
-<script src="assets/js/app.js"></script>
 <script src="assets/js/simulador.js"></script>
 </body>
 </html>
