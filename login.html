@@ -1,36 +1,104 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Login · GUSMARINHO Contador Online</title><link href="assets/img/favicon.svg" rel="icon" type="image/svg+xml"/><link href="assets/css/app.css" rel="stylesheet"/></head>
-<body data-accent="emerald">
-<script>if(localStorage.getItem('gusmarinho_token'))window.location.href='index.html';</script>
-<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px">
-<div class="card" style="max-width:400px;width:100%">
-<div style="text-align:center;margin-bottom:24px">
-<span class="brand-mark gusmarinho-mark" style="display:inline-flex;width:48px;height:48px;margin-bottom:12px"><span class="i"><svg role="img" viewBox="0 0 64 64" style="width:100%;height:100%"><defs><linearGradient id="gusmarinhoMarkLogin" x1="10" x2="54" y1="8" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#22d3ee"></stop><stop offset=".52" stop-color="#2563eb"></stop><stop offset="1" stop-color="#7c3aed"></stop></linearGradient></defs><rect x="6" y="6" width="52" height="52" rx="18" fill="url(#gusmarinhoMarkLogin)"></rect><path d="M18 39.5 28.2 29l7 6.8L46.5 22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="18" cy="39.5" r="3.2" fill="#fff"></circle><circle cx="28.2" cy="29" r="3.2" fill="#fff"></circle><circle cx="35.2" cy="35.8" r="3.2" fill="#fff"></circle><circle cx="46.5" cy="22" r="3.2" fill="#fff"></circle></svg></span></span>
-<h1 style="font-size:24px;margin:0;font-weight:700">GUSMARINHO</h1>
-<p class="muted" style="margin:4px 0 0">Contador Online</p>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrar · Plataforma Lotofácil</title>
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">L</div>
+      <div class="auth-title">Lotofácil Pro</div>
+      <div class="auth-sub">Simulador, Conferidor e Geradores</div>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Entrar</div>
+      <div class="auth-tab" id="tab-cadastro" onclick="switchTab('cadastro')">Cadastrar</div>
+    </div>
+    <div id="alert-area"></div>
+    <!-- Login -->
+    <form id="form-login" onsubmit="return fazerLogin(event)">
+      <div class="form-group">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-input" id="login-email" required placeholder="seu@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Senha</label>
+        <input type="password" class="form-input" id="login-senha" required placeholder="••••••">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-login">Entrar</button>
+    </form>
+    <!-- Cadastro -->
+    <form id="form-cadastro" onsubmit="return fazerCadastro(event)" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-input" id="cad-nome" required placeholder="Seu nome">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-input" id="cad-email" required placeholder="seu@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Senha</label>
+        <input type="password" class="form-input" id="cad-senha" required minlength="6" placeholder="Mínimo 6 caracteres">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-cad">Criar conta</button>
+    </form>
+  </div>
 </div>
-<form id="loginForm">
-<div class="field"><label>E-mail</label><input class="control" type="email" id="email" placeholder="seu@email.com" required/></div>
-<div class="field"><label>Senha</label><input class="control" type="password" id="senha" placeholder="••••••" required/></div>
-<div id="errorMsg" class="badge danger" style="display:none;margin-bottom:12px;padding:8px 12px"></div>
-<button type="submit" class="btn primary block">Entrar</button>
-</form>
-<p style="text-align:center;margin-top:16px">Não tem conta? <a href="register.html">Cadastre-se</a></p>
-</div>
-</div>
+<script src="assets/js/app.js"></script>
 <script>
-document.getElementById('loginForm').addEventListener('submit',async(e)=>{
-e.preventDefault();
-const email=document.getElementById('email').value;
-const senha=document.getElementById('senha').value;
-const el=document.getElementById('errorMsg');
-el.style.display='none';
-try{
-const res=await fetch('/api/contador/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,senha})});
-const data=await res.json();
-if(res.ok){localStorage.setItem('gusmarinho_token',data.token);localStorage.setItem('gusmarinho_nome',data.nomeEscritorio);localStorage.setItem('gusmarinho_contador_id',data.contadorId);window.location.href='index.html';}
-else{el.textContent=data.erro||'Erro ao fazer login.';el.style.display='block';}
-}catch(err){el.textContent='Erro ao conectar. Tente novamente.';el.style.display='block';}
-});
+function switchTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-cadastro').classList.toggle('active', tab === 'cadastro');
+  document.getElementById('form-login').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('form-cadastro').style.display = tab === 'cadastro' ? '' : 'none';
+  document.getElementById('alert-area').innerHTML = '';
+}
+
+async function fazerLogin(e) {
+  e.preventDefault();
+  const btn = el('btn-login');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Entrando...';
+  try {
+    const data = await API.post('/api/auth/login', {
+      email: el('login-email').value.trim(),
+      senha: el('login-senha').value
+    });
+    localStorage.setItem('lotofacil_token', data.token);
+    localStorage.setItem('lotofacil_user', JSON.stringify(data.usuario));
+    window.location.href = 'index.html';
+  } catch (err) {
+    document.getElementById('alert-area').innerHTML = alertBox(err.message, 'error');
+    btn.disabled = false; btn.textContent = 'Entrar';
+  }
+  return false;
+}
+
+async function fazerCadastro(e) {
+  e.preventDefault();
+  const btn = el('btn-cad');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Criando...';
+  try {
+    const data = await API.post('/api/auth/cadastro', {
+      nome: el('cad-nome').value.trim(),
+      email: el('cad-email').value.trim(),
+      senha: el('cad-senha').value
+    });
+    localStorage.setItem('lotofacil_token', data.token);
+    localStorage.setItem('lotofacil_user', JSON.stringify(data.usuario));
+    window.location.href = 'index.html';
+  } catch (err) {
+    document.getElementById('alert-area').innerHTML = alertBox(err.message, 'error');
+    btn.disabled = false; btn.textContent = 'Criar conta';
+  }
+  return false;
+}
+
+if (API.isAuthed()) window.location.href = 'index.html';
 </script>
-</body></html>
+</body>
+</html>

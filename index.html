@@ -1,111 +1,105 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Painel · GUSMARINHO Contador Online</title><link href="assets/img/favicon.svg" rel="icon" type="image/svg+xml"/><link href="assets/css/app.css" rel="stylesheet"/></head>
-<body data-accent="emerald" data-page="index" style="display:none">
-<script>const _t=localStorage.getItem('gusmarinho_token');if(!_t){window.location.href='login.html';}else{document.body.style.display='';}</script>
-<div class="app-shell"><div class="overlay"></div>
-<aside class="sidebar">
-<a class="brand" href="index.html">
-<span aria-hidden="true" class="brand-mark gusmarinho-mark"><span class="i"><svg role="img" viewBox="0 0 64 64"><defs><linearGradient id="gusmarinhoMarkGradientInline" x1="10" x2="54" y1="8" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#22d3ee"></stop><stop offset=".52" stop-color="#2563eb"></stop><stop offset="1" stop-color="#7c3aed"></stop></linearGradient></defs><rect x="6" y="6" width="52" height="52" rx="18" fill="url(#gusmarinhoMarkGradientInline)"></rect><path d="M18 39.5 28.2 29l7 6.8L46.5 22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="18" cy="39.5" r="3.2" fill="#fff"></circle><circle cx="28.2" cy="29" r="3.2" fill="#fff"></circle><circle cx="35.2" cy="35.8" r="3.2" fill="#fff"></circle><circle cx="46.5" cy="22" r="3.2" fill="#fff"></circle></svg></span></span>
-<span class="brand-text"><span class="brand-name">GUSMARINHO</span><span class="brand-sub">CONTADOR ONLINE</span></span>
-</a>
-<div class="sidebar-scroll">
-<div class="nav-section"><div class="nav-section-title">Principal</div><div class="nav-list">
-<a class="nav-link active" data-title="Painel" href="index.html"><span class="i"><svg viewbox="0 0 24 24"><rect height="7" rx="1.5" width="7" x="3" y="3"></rect><rect height="7" rx="1.5" width="7" x="14" y="3"></rect><rect height="7" rx="1.5" width="7" x="3" y="14"></rect><rect height="7" rx="1.5" width="7" x="14" y="14"></rect></svg></span><span class="nav-label">Painel</span></a>
-<a class="nav-link" data-title="Análises" href="analytics.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg></span><span class="nav-label">Análises</span></a>
-</div></div>
-<div class="nav-section"><div class="nav-section-title">Gestão</div><div class="nav-list">
-<a class="nav-link" data-title="Empresas" href="users.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span class="nav-label">Empresas</span></a>
-<a class="nav-link" data-title="Funções &amp; Permissões" href="roles.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-5"></path></svg></span><span class="nav-label">Funções &amp; Permissões</span></a>
-<a class="nav-link" data-title="Produtos" href="products.html"><span class="i"><svg viewbox="0 0 24 24"><path d="m21 16-9 5-9-5l9-5 9 5Z"></path><path d="m3.3 7.7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg></span><span class="nav-label">Produtos</span></a>
-<a class="nav-link" data-title="Pedidos" href="orders.html"><span class="i"><svg viewbox="0 0 24 24"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2 2h3l3 13h10l3-9H7"></path></svg></span><span class="nav-label">Pedidos</span></a>
-</div></div>
-<div class="nav-section"><div class="nav-section-title">Páginas</div><div class="nav-list">
-<a class="nav-link" data-title="Relatórios" href="reports.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2Z"></path><path d="M14 2v6h6"></path><path d="M8 17v-5"></path><path d="M12 17v-3"></path><path d="M16 17v-7"></path></svg></span><span class="nav-label">Relatórios</span></a>
-<a class="nav-link" data-title="Calendário" href="calendar.html"><span class="i"><svg viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg></span><span class="nav-label">Calendário</span></a>
-<a class="nav-link" data-title="Tarefas" href="todo.html"><span class="i"><svg viewbox="0 0 24 24"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span class="nav-label">Tarefas</span></a>
-<a class="nav-link" data-title="Chat" href="chat.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg></span><span class="nav-label">Chat</span></a>
-<a class="nav-link" data-title="Configurações" href="settings.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"></path><path d="M19.4 15a1.8 1.8 0 0 0 .36 2l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.8 1.8 0 0 0-2-.36 1.8 1.8 0 0 0-1 1.64V21a2 2 0 1 1-4 0v-.09a1.8 1.8 0 0 0-1-1.64 1.8 1.8 0 0 0-2 .36l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.8 1.8 0 0 0 .36-2 1.8 1.8 0 0 0-1.64-1H3a2 2 0 1 1 0-4h.09a1.8 1.8 0 0 0 1.64-1 1.8 1.8 0 0 0-.36-2l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.8 1.8 0 0 0 2 .36h.06a1.8 1.8 0 0 0 1-1.64V3a2 2 0 1 1 4 0v.09a1.8 1.8 0 0 0 1 1.64h.06a1.8 1.8 0 0 0 2-.36l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.8 1.8 0 0 0-.36 2v.06a1.8 1.8 0 0 0 1.64 1H21a2 2 0 1 1 0 4h-.09a1.8 1.8 0 0 0-1.64 1Z"></path></svg></span><span class="nav-label">Configurações</span></a>
-</div></div>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel · Lotofácil Pro</title>
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="index">
+<script>if(!requireAuth()){}</script>
+<div class="app-shell">
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">L</span>
+      <span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span>
+    </a>
+    <div class="sidebar-scroll">
+      <div class="nav-section"><div class="nav-section-title">Principal</div>
+        <a class="nav-link active" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
+        <a class="nav-link" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
+        <a class="nav-link" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
+        <a class="nav-link" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
+        <a class="nav-link" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
+        <a class="nav-link" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
+        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
+      </div>
+    </div>
+    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+      <div><div class="topbar-title">Painel</div><div class="topbar-sub">Visão geral da Lotofácil</div></div>
+      <div class="topbar-right"><button class="btn btn-outline btn-sm" onclick="atualizarSorteio()">🔄 Atualizar Sorteio</button></div>
+    </div>
+    <div class="content">
+      <div id="alert-area"></div>
+      <div class="grid grid-4" style="margin-bottom:20px">
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-info"><div class="stat-value" id="stat-ultimo">--</div><div class="stat-label">Último Concurso</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:rgba(255,193,7,.12);color:var(--gold)">📅</div><div class="stat-info"><div class="stat-value" id="stat-data">--</div><div class="stat-label">Data Sorteio</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:rgba(64,196,255,.12);color:var(--info)">🎰</div><div class="stat-info"><div class="stat-value" id="stat-jogos">--</div><div class="stat-label">Jogos Salvos</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:rgba(179,136,255,.12);color:var(--purple)">📚</div><div class="stat-info"><div class="stat-value" id="stat-concursos">--</div><div class="stat-label">Concursos no BD</div></div></div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Último Sorteio</div><div class="card-sub" id="ultimo-concurso-info">—</div></div></div>
+          <div id="ultimo-sorteio" style="margin-bottom:16px"></div>
+          <a href="simulador.html" class="btn btn-primary btn-block">Conferir meus jogos →</a>
+        </div>
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Ações Rápidas</div></div></div>
+          <a href="gerador.html" class="btn btn-outline btn-block" style="margin-bottom:8px">⚙️ Gerar jogos com filtros</a>
+          <a href="fechamentos.html" class="btn btn-outline btn-block" style="margin-bottom:8px">🔢 Criar fechamento matemático</a>
+          <a href="estatisticas.html" class="btn btn-outline btn-block" style="margin-bottom:8px">📈 Ver estatísticas avançadas</a>
+          <a href="meus-jogos.html" class="btn btn-outline btn-block">💾 Gerenciar jogos salvos</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</aside>
-<main class="app-main">
-<header class="topbar">
-<button aria-label="Alternar sidebar" class="icon-btn" data-action="toggle-sidebar"><span class="i"><svg viewbox="0 0 24 24"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg></span></button>
-<div class="search"><span class="i"><svg viewbox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></span><input placeholder="Buscar..."/><span class="kbd">⌘K</span></div>
-<div class="top-actions">
-<button aria-label="Tema" class="icon-btn hide-sm" data-action="theme-panel"><span class="i"><svg viewbox="0 0 24 24"><path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 3-4 3h-1.5a2.5 2.5 0 0 0 0 5H17c-1.4 1.2-3.1 2-5 2Z"></path><circle cx="7" cy="10" r="1"></circle><circle cx="10" cy="7" r="1"></circle><circle cx="14" cy="7" r="1"></circle><circle cx="17" cy="10" r="1"></circle></svg></span></button>
-<button aria-label="Notificações" class="icon-btn" data-dropdown-target="#notifMenu"><span class="i"><svg viewbox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></span><span class="dot"></span></button>
-<button class="user-chip" data-dropdown-target="#profileMenu"><span class="avatar" id="userAvatar">GM</span><span class="user-meta"><strong id="userName">Carregando...</strong><span>Contador</span></span></button>
-</div>
-</header>
-<div class="dropdown" id="notifMenu">
-<div class="dropdown-head">Notificações</div>
-<div id="notifList"><div class="dropdown-item" style="text-align:center;padding:16px"><span class="muted">Carregando...</span></div></div>
-</div>
-<div class="dropdown" id="profileMenu">
-<div class="dropdown-head" id="profileName">Carregando...</div>
-<a class="dropdown-item" href="settings.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="7" r="4"></circle></svg></span>Conta</a>
-<a class="dropdown-item" href="settings.html"><span class="i"><svg viewbox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"></path></svg></span>Configurações</a>
-<a class="dropdown-item" href="reset-password.html"><span class="i"><svg viewbox="0 0 24 24"><rect height="10" rx="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>Alterar senha</a>
-<a class="dropdown-item" href="login.html" id="logoutBtn"><span class="i"><svg viewbox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg></span>Sair</a>
-</div>
-<div class="theme-panel">
-<div class="card-title">Paleta de cores</div>
-<p class="card-sub" style="margin-bottom:14px">Escolha a cor de destaque do painel.</p>
-<div class="swatches"><button class="swatch" data-accent="emerald"></button><button class="swatch" data-accent="indigo"></button><button class="swatch" data-accent="violet"></button><button class="swatch" data-accent="sky"></button><button class="swatch" data-accent="rose"></button><button class="swatch" data-accent="amber"></button><button class="swatch" data-accent="slate"></button></div>
-<div style="height:14px"></div>
-<div class="grid cols-2"><button class="btn soft" data-mode="light">Claro</button><button class="btn soft" data-mode="dark">Escuro</button></div>
-</div>
-<section class="page">
-<div class="page-head"><div class="page-title"><div class="breadcrumbs"><span>Início</span><span>Painel</span></div><h1>Painel</h1><p>Bem-vindo de volta, aqui está a visão geral do sistema.</p></div><div class="page-tools"><button class="btn" data-export-page=""><span class="i"><svg viewbox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M7 10l5 5 5-5"></path><path d="M12 15V3"></path></svg></span>Exportar</button></div></div>
-<div class="grid cols-4" id="statsGrid">
-<div class="card stat"><div><div class="label">Carregando...</div><div class="value">—</div></div></div>
-<div class="card stat"><div><div class="label">Carregando...</div><div class="value">—</div></div></div>
-<div class="card stat"><div><div class="label">Carregando...</div><div class="value">—</div></div></div>
-<div class="card stat"><div><div class="label">Carregando...</div><div class="value">—</div></div></div>
-</div>
-<div style="height:18px"></div>
-<div class="grid aside">
-<div class="card"><div class="card-head"><div><h3 class="card-title">Pendências Recentes</h3><p class="card-sub">Últimas pendências cadastradas</p></div></div><div class="table-wrap"><table class="table"><thead><tr><th>Empresa</th><th>Descrição</th><th>Prioridade</th><th>Prazo</th><th>Status</th></tr></thead><tbody id="pendenciasBody"><tr><td colspan="5" class="muted" style="text-align:center;padding:24px">Carregando...</td></tr></tbody></table></div></div>
-<div class="card"><div class="card-head"><h3 class="card-title">Status das Pendências</h3></div><div class="card-pad" id="statusOverview"><div class="goal-row"><div class="goal-top"><span>Carregando...</span></div></div></div></div>
-</div>
-</section>
-<footer class="footer"><span>© 2026 GUSMARINHO Contador Online.</span><span>Sistema de gestão contábil online.</span></footer>
-</main></div>
 <script src="assets/js/app.js"></script>
 <script>
-const _token=localStorage.getItem('gusmarinho_token');
-const _nome=localStorage.getItem('gusmarinho_nome')||'Escritório';
-document.getElementById('userName').textContent=_nome;
-document.getElementById('profileName').textContent=_nome;
-document.getElementById('userAvatar').textContent=_nome.trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();
-document.getElementById('logoutBtn').addEventListener('click',e=>{e.preventDefault();localStorage.removeItem('gusmarinho_token');localStorage.removeItem('gusmarinho_nome');localStorage.removeItem('gusmarinho_contador_id');window.location.href='login.html';});
-async function _api(p){const r=await fetch(p,{headers:{'Authorization':'Bearer '+_token}});if(r.status===401){localStorage.removeItem('gusmarinho_token');window.location.href='login.html';return null;}return r.json();}
-async function _loadDashboard(){
-try{
-const s=await _api('/api/dashboard/stats');if(!s)return;
-const cards=[
-{label:'Clientes',value:s.clientes,trend:s.guiasVencer+' guias a vencer',icon:'<svg viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>'},
-{label:'Inadimplentes',value:s.inadimplentes,trend:s.clientes>0?Math.round(s.inadimplentes/s.clientes*100)+'% do total':'0% do total',icon:'<svg viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-5"></path></svg>'},
-{label:'Documentos Hoje',value:s.documentosHoje,trend:'recebidos hoje',icon:'<svg viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2Z"></path><path d="M14 2v6h6"></path></svg>'},
-{label:'Pendências',value:s.pendencias,trend:s.status.urgente+' urgentes',icon:'<svg viewbox="0 0 24 24"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>'}
-];
-document.getElementById('statsGrid').innerHTML=cards.map(c=>'<div class="card stat"><div><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div><span class="trend up">'+c.trend+'</span></div><span class="stat-icon"><span class="i">'+c.icon+'</span></span></div>').join('');
-const tot=s.status.urgente+s.status.atencao+s.status.emDia;
-document.getElementById('statusOverview').innerHTML='<div class="goal-row"><div class="goal-top"><span>Urgente</span><span>'+s.status.urgente+'</span></div><div class="progress"><span style="--value:'+(tot>0?Math.round(s.status.urgente/tot*100):0)+'%;background:var(--danger)"></span></div></div><div class="goal-row"><div class="goal-top"><span>Atenção</span><span>'+s.status.atencao+'</span></div><div class="progress"><span style="--value:'+(tot>0?Math.round(s.status.atencao/tot*100):0)+'%;background:var(--warning)"></span></div></div><div class="goal-row"><div class="goal-top"><span>Em Dia</span><span>'+s.status.emDia+'</span></div><div class="progress"><span style="--value:'+(tot>0?Math.round(s.status.emDia/tot*100):100)+'%;background:var(--success)"></span></div></div>';
-const pends=await _api('/api/dashboard/pendencias-recentes');if(!pends)return;
-const tb=document.getElementById('pendenciasBody');
-if(!pends.length){tb.innerHTML='<tr><td colspan="5" class="muted" style="text-align:center;padding:24px">Nenhuma pendência encontrada</td></tr>';}
-else{tb.innerHTML=pends.map(p=>{const pc=p.prioridade==='urgente'?'danger':p.prioridade==='atencao'?'warning':'success';const sc=p.status==='pendente'?'warning':'success';const pz=p.prazo?new Date(p.prazo).toLocaleDateString('pt-BR'):'—';return '<tr><td>'+(p.razaosocial||'—')+'</td><td>'+(p.descricao||'—')+'</td><td><span class="badge '+pc+'">'+(p.prioridade||'media')+'</span></td><td>'+pz+'</td><td><span class="badge '+sc+'">'+(p.status||'pendente')+'</span></td></tr>';}).join('');}
-}catch(e){console.error('Erro:',e);}
+async function carregarPainel() {
+  try {
+    const [ultimo, concursos, jogos] = await Promise.all([
+      API.get('/api/concursos/ultimo'),
+      API.get('/api/concursos?limite=1'),
+      API.get('/api/jogos').catch(() => ({ jogos: [] }))
+    ]);
+    if (ultimo.concurso) {
+      const c = ultimo.concurso;
+      el('stat-ultimo').textContent = '#' + c.numero;
+      el('stat-data').textContent = fmt(c.data_sorteio);
+      el('ultimo-concurso-info').textContent = `Concurso ${c.numero} — ${fmt(c.data_sorteio)}`;
+      el('ultimo-sorteio').innerHTML = `<div class="game-numbers" style="margin-bottom:8px">${renderNumbers(c.dezenas, { drawn: c.dezenas })}</div>`;
+    } else {
+      el('ultimo-sorteio').innerHTML = '<div class="empty-state">Nenhum concurso cadastrado. Clique em "Atualizar Sorteio".</div>';
+    }
+    el('stat-jogos').textContent = jogos.jogos ? jogos.jogos.length : 0;
+    el('stat-concursos').textContent = concursos.concursos ? concursos.concursos.length : 0;
+  } catch (err) {
+    showError('alert-area', err.message);
+  }
 }
-async function _loadNotif(){
-try{
-const a=await _api('/api/avisos');if(!a)return;const l=document.getElementById('notifList');
-if(!a.length){l.innerHTML='<div class="dropdown-item" style="text-align:center;padding:16px"><span class="muted">Nenhuma notificação</span></div>';}
-else{l.innerHTML=a.slice(0,5).map(x=>'<button class="dropdown-item notif"><span class="badge-dot" style="background:'+(x.tipo==='warning'?'var(--warning)':x.tipo==='danger'?'var(--danger)':'var(--accent)')+'"></span><span><strong>'+(x.titulo||'Aviso')+'</strong><p>'+(x.mensagem||'')+'</p></span></button>').join('');}
-}catch(e){console.error('Erro:',e);}
+
+async function atualizarSorteio() {
+  el('alert-area').innerHTML = alertBox('Buscando último sorteio oficial...', 'info');
+  try {
+    const data = await API.get('/api/concursos/atualizar');
+    el('alert-area').innerHTML = alertBox(`Sorteio atualizado! Concurso ${data.concurso.numero}.`, 'success');
+    carregarPainel();
+  } catch (err) {
+    el('alert-area').innerHTML = alertBox('Não foi possível buscar automaticamente. ' + err.message + ' Use a importação manual na aba Simulador.', 'warning');
+  }
 }
-_loadDashboard();_loadNotif();
+
+carregarPainel();
 </script>
-</body></html>
+</body>
+</html>

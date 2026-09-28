@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador & Conferidor · Lotofácil Pro</title>
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="simulador">
+<script>if(!requireAuth()){}</script>
+<div class="app-shell">
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark">L</span><span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span></a>
+    <div class="sidebar-scroll">
+      <div class="nav-section"><div class="nav-section-title">Principal</div>
+        <a class="nav-link" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
+        <a class="nav-link active" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
+        <a class="nav-link" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
+        <a class="nav-link" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
+        <a class="nav-link" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
+        <a class="nav-link" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
+        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
+      </div>
+    </div>
+    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+      <div><div class="topbar-title">Simulador & Conferidor</div><div class="topbar-sub">Confira seus jogos com o último sorteio</div></div>
+    </div>
+    <div class="content">
+      <div id="alert-area"></div>
+      <div class="grid grid-2">
+        <!-- Coluna esquerda: entrada de jogos -->
+        <div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Inserir Jogo</div><div class="card-sub">Selecione 15 dezenas (1-25)</div></div>
+              <span class="badge badge-green" id="sel-count">0 / 15</span>
+            </div>
+            <div class="number-grid" id="grid-jogo" style="margin-bottom:16px"></div>
+            <div class="form-row" style="margin-bottom:12px">
+              <button class="btn btn-primary btn-block" onclick="adicionarJogo()">➕ Adicionar Jogo</button>
+              <button class="btn btn-outline btn-block" onclick="limparSelecao()">Limpar</button>
+            </div>
+            <div class="form-row">
+              <button class="btn btn-outline btn-block" onclick="carregarJogosSalvos()">📂 Carregar Salvos</button>
+              <button class="btn btn-outline btn-block" onclick="gerarAleatorio()">🎲 Aleatório</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Sorteio (Gabarito)</div><div class="card-sub">Concurso usado na conferência</div></div></div>
+            <div class="form-group">
+              <label class="form-label">Concurso</label>
+              <select class="form-select" id="sel-concurso"><option value="">Último concurso</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Ou digite o resultado manualmente (15 dezenas)</label>
+              <input type="text" class="form-input" id="sorteio-manual" placeholder="Ex: 1 5 7 10 12 14 15 16 18 20 22 24 25 3 9">
+            </div>
+            <button class="btn btn-gold btn-block btn-lg" onclick="conferir()">🎯 CONFERIR TUDO</button>
+          </div>
+        </div>
+        <!-- Coluna direita: lista de jogos + resultados -->
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Meus Jogos</div><div class="card-sub" id="jogos-count">0 jogos adicionados</div></div>
+              <button class="btn btn-outline btn-sm no-print" onclick="limparJogos()">Limpar tudo</button>
+            </div>
+            <div id="lista-jogos"><div class="empty-state"><div class="empty-state-icon">🎯</div>Adicione jogos para conferir</div></div>
+          </div>
+          <div class="card" id="resultado-card" style="display:none">
+            <div class="card-header"><div><div class="card-title">Resultado da Conferência</div><div class="card-sub" id="resultado-info"></div></div></div>
+            <div id="resumo-area" style="margin-bottom:16px"></div>
+            <div id="resultado-area"></div>
+            <div class="no-print" style="margin-top:16px">
+              <button class="btn btn-outline" onclick="imprimirResultado()">🖨️ Imprimir</button>
+              <button class="btn btn-outline" onclick="salvarTodosJogos()">💾 Salvar todos</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal jogos salvos -->
+<div class="modal-overlay" id="modal-salvos">
+  <div class="modal">
+    <div class="modal-title">Jogos Salvos <button class="modal-close" onclick="el('modal-salvos').classList.remove('show')">×</button></div>
+    <div id="modal-salvos-content"></div>
+  </div>
+</div>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/simulador.js"></script>
+</body>
+</html>
