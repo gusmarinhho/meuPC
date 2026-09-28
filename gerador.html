@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerador com Filtros · Lotofácil Pro</title>
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body data-page="gerador">
+<script>if(!requireAuth()){}</script>
+<div class="app-shell">
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark">L</span><span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span></a>
+    <div class="sidebar-scroll">
+      <div class="nav-section"><div class="nav-section-title">Principal</div>
+        <a class="nav-link" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
+        <a class="nav-link" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
+        <a class="nav-link active" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
+        <a class="nav-link" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
+        <a class="nav-link" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
+        <a class="nav-link" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
+        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
+      </div>
+    </div>
+    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+      <div><div class="topbar-title">Gerador com Filtros</div><div class="topbar-sub">Gere jogos inteligentes com filtros estatísticos</div></div>
+    </div>
+    <div class="content">
+      <div id="alert-area"></div>
+      <div class="grid grid-2">
+        <div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Dezenas Fixas</div><div class="card-sub">Dezenas que aparecerão em todos os jogos</div></div>
+              <span class="badge badge-green" id="fixas-count">0 selecionadas</span>
+            </div>
+            <div class="number-grid" id="grid-fixas" style="margin-bottom:16px"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Dezenas a Excluir</div><div class="card-sub">Não aparecerão em nenhum jogo</div></div>
+              <span class="badge badge-red" id="excluir-count">0 selecionadas</span>
+            </div>
+            <div class="number-grid" id="grid-excluir" style="margin-bottom:16px"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Filtros Estatísticos</div></div></div>
+            <div class="form-group">
+              <label class="form-label">Quantidade de jogos</label>
+              <input type="number" class="form-input" id="f-qtd" value="10" min="1" max="1000">
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Pares (mín)</label><input type="number" class="form-input" id="f-min-pares" value="0" min="0" max="15"></div>
+              <div class="form-group"><label class="form-label">Pares (máx)</label><input type="number" class="form-input" id="f-max-pares" value="15" min="0" max="15"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Primos (mín)</label><input type="number" class="form-input" id="f-min-primos" value="0" min="0" max="15"></div>
+              <div class="form-group"><label class="form-label">Primos (máx)</label><input type="number" class="form-input" id="f-max-primos" value="15" min="0" max="15"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Soma (mín)</label><input type="number" class="form-input" id="f-min-soma" value="0" min="0" max="300"></div>
+              <div class="form-group"><label class="form-label">Soma (máx)</label><input type="number" class="form-input" id="f-max-soma" value="300" min="0" max="300"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Filtros rápidos</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="btn btn-outline btn-sm" onclick="presetFiltro('equilibrado')">Equilibrado</button>
+                <button class="btn btn-outline btn-sm" onclick="presetFiltro('maisPares')">Mais Pares</button>
+                <button class="btn btn-outline btn-sm" onclick="presetFiltro('maisImpares')">Mais Ímpares</button>
+                <button class="btn btn-outline btn-sm" onclick="presetFiltro('somaMedia')">Soma Média</button>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block btn-lg" id="btn-gerar" onclick="gerar()">⚙️ GERAR JOGOS</button>
+          </div>
+        </div>
+      </div>
+      <div class="card" id="result-card" style="display:none">
+        <div class="card-header">
+          <div><div class="card-title">Jogos Gerados</div><div class="card-sub" id="gerados-count"></div></div>
+          <div class="no-print">
+            <button class="btn btn-outline btn-sm" onclick="salvarGerados()">💾 Salvar todos</button>
+            <button class="btn btn-outline btn-sm" onclick="imprimirGerados()">🖨️ Imprimir</button>
+          </div>
+        </div>
+        <div id="gerados-area"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/gerador.js"></script>
+</body>
+</html>

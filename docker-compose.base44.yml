@@ -2,16 +2,17 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_USER=gusmarinho
-      - POSTGRES_PASSWORD=gusmarinho
-      - POSTGRES_DB=gusmarinho
+      - POSTGRES_USER=lotofacil
+      - POSTGRES_PASSWORD=lotofacil
+      - POSTGRES_DB=lotofacil
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gusmarinho"]
+      test: ["CMD-SHELL", "pg_isready -U lotofacil"]
       interval: 5s
       timeout: 5s
       retries: 10
+    restart: on-failure
 
   api:
     image: node:22
@@ -21,15 +22,23 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://gusmarinho:gusmarinho@db:5432/gusmarinho
+      - DATABASE_URL=postgresql://lotofacil:lotofacil@db:5432/lotofacil
       - DATABASE_SSL=false
       - PORT=3000
+      - BASE44_PUBLIC_HOST_SUFFIX=${BASE44_PUBLIC_HOST_SUFFIX:-}
     env_file:
       - ./.env.base44-defaults
       - /run/base44/app.env
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/api/concursos/ultimo || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: on-failure
     command: sh -c "npm install --omit=dev 2>/dev/null; npx nodemon server.js"
 
 volumes:
