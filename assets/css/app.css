@@ -285,6 +285,18 @@ input, select, textarea { font-family: inherit; }
   border-color: var(--primary);
   color: #fff;
 }
+.num-btn.prev-drawn {
+  background: rgba(192, 57, 43, 0.12);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.num-btn.selected.prev-drawn {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.3);
+}
 
 /* Game card (15 numbers) */
 .game-card {

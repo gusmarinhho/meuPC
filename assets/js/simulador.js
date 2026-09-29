@@ -3,14 +3,17 @@
 let gridSel = null;
 let ultimoResultado = null;
 let ordemAtual = 'sorteio';
+let concursoAnterior = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   injectLayout('montar-jogo');
   gridSel = initNumberGrid('grid-jogo', (nums) => {
     el('sel-count').textContent = `${nums.length} / 20`;
     atualizarStats(nums);
+    atualizarConcursoAnterior(nums);
   }, 20);
   await carregarConcursos();
+  await carregarConcursoAnterior();
 
   // Veio da página de resultados? carrega concurso para teste
   const params = new URLSearchParams(location.search);
@@ -34,6 +37,47 @@ function atualizarStats(nums) {
   const impares = nums.length - pares;
   const soma = nums.reduce((s, n) => s + n, 0);
   el('jogo-stats').textContent = `Par:${pares} Ímpar:${impares} | Soma:${soma}`;
+}
+
+async function carregarConcursoAnterior() {
+  try {
+    const data = await API.get('/api/concursos/ultimo');
+    concursoAnterior = data.concurso || null;
+    atualizarConcursoAnterior(gridSel.get());
+  } catch (e) { /* silencioso */ }
+}
+
+function atualizarConcursoAnterior(nums) {
+  const grid = el('grid-jogo');
+  const info = el('concurso-anterior-info');
+  if (!grid) return;
+  const dezenasAnt = concursoAnterior ? new Set(concursoAnterior.dezenas) : new Set();
+
+  // Marca botões da grade com vermelho (dezenas do concurso anterior)
+  grid.querySelectorAll('.num-btn').forEach(btn => {
+    const n = parseInt(btn.dataset.num, 10);
+    if (dezenasAnt.has(n)) btn.classList.add('prev-drawn');
+    else btn.classList.remove('prev-drawn');
+  });
+
+  // Painel informativo
+  if (!info) return;
+  if (!concursoAnterior) {
+    info.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Nenhum concurso anterior encontrado.</div>';
+    return;
+  }
+  const repetidos = nums.filter(n => dezenasAnt.has(n));
+  const numsFmt = (arr) => arr.map(n => String(n).padStart(2, '0')).join(' ');
+  info.innerHTML = `
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">
+      🔴 Concurso anterior: <strong style="color:var(--danger)">${concursoAnterior.numero}</strong> — ${fmt(concursoAnterior.data_sorteio)}
+    </div>
+    <div style="font-size:12px;margin-bottom:6px;color:var(--danger);font-weight:700">
+      ${numsFmt(concursoAnterior.dezenas)}
+    </div>
+    <div style="font-size:13px;font-weight:700;color:var(--danger)">
+      ${repetidos.length} repetida(s): ${repetidos.length ? numsFmt(repetidos) : '—'}
+    </div>`;
 }
 
 function limpar() {
