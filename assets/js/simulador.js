@@ -78,6 +78,20 @@ function atualizarConcursoAnterior(nums) {
     <div style="font-size:13px;font-weight:700;color:var(--danger)">
       ${repetidos.length} repetida(s): ${repetidos.length ? numsFmt(repetidos) : '—'}
     </div>`;
+
+  // Seção de repetidos na área de resultados (coluna 2)
+  const repRes = el('repetidos-resultado');
+  if (repRes && !ultimoResultado) {
+    repRes.innerHTML = `
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">
+        Números repetidos do concurso anterior <strong style="color:var(--danger)">${concursoAnterior.numero}</strong>:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        ${repetidos.length
+          ? repetidos.map(n => `<span style="display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;border-radius:50%;background:var(--danger);color:#fff;font-weight:700;font-size:13px">${String(n).padStart(2,'0')}</span>`).join('')
+          : '<span style="font-size:13px;color:var(--text-muted)">Nenhuma repetida ainda. Selecione números para ver.</span>'}
+      </div>`;
+  }
 }
 
 function limpar() {
