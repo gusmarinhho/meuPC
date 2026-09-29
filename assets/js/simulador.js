@@ -7,9 +7,9 @@ let ordemAtual = 'sorteio';
 document.addEventListener('DOMContentLoaded', async () => {
   injectLayout('montar-jogo');
   gridSel = initNumberGrid('grid-jogo', (nums) => {
-    el('sel-count').textContent = `${nums.length} / 15`;
+    el('sel-count').textContent = `${nums.length} / 20`;
     atualizarStats(nums);
-  });
+  }, 20);
   await carregarConcursos();
 
   // Veio da página de resultados? carrega concurso para teste
@@ -43,8 +43,8 @@ function limpar() {
 
 async function conferir() {
   const nums = gridSel.get();
-  if (nums.length !== 15) {
-    el('alert-area').innerHTML = alertBox('Selecione exatamente 15 dezenas.', 'warning');
+  if (nums.length < 15 || nums.length > 20) {
+    el('alert-area').innerHTML = alertBox('Selecione de 15 a 20 dezenas.', 'warning');
     return;
   }
   el('alert-area').innerHTML = alertBox('Conferindo contra todos os concursos...', 'info');
