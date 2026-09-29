@@ -36,6 +36,14 @@ function validarDezenas(dezenas) {
   return dezenas.every(n => Number.isInteger(n) && n >= 1 && n <= 25);
 }
 
+// Validação para conferência: permite de 15 a 20 dezenas
+function validarDezenasConferencia(dezenas) {
+  if (!Array.isArray(dezenas) || dezenas.length < 15 || dezenas.length > 20) return false;
+  const set = new Set(dezenas);
+  if (set.size !== dezenas.length) return false;
+  return dezenas.every(n => Number.isInteger(n) && n >= 1 && n <= 25);
+}
+
 // Conta acertos entre jogo e sorteio
 function contarAcertos(jogo, sorteio) {
   const set = new Set(sorteio);
@@ -401,7 +409,7 @@ app.post('/api/conferir', async (req, res) => {
 app.post('/api/conferir-todos', async (req, res) => {
   try {
     const { dezenas } = req.body;
-    if (!validarDezenas(dezenas)) return res.status(400).json({ erro: 'Jogo inválido (15 dezenas de 1 a 25)' });
+    if (!validarDezenasConferencia(dezenas)) return res.status(400).json({ erro: 'Jogo inválido (de 15 a 20 dezenas de 1 a 25)' });
     const jogo = ordenarDezenas(dezenas);
     const jogoSet = new Set(jogo);
 
