@@ -51,7 +51,7 @@ function injectLayout(activeId) {
       <div class="header-top">
         <a class="site-logo" href="index.html">LOTOFÁCIL</a>
         <div class="header-right">
-          <span style="color:var(--text-muted)">MazuSoft</span>
+          <span style="color:var(--text-muted)">Gusoft</span>
         </div>
       </div>
       <button class="nav-toggle" onclick="toggleNav()">☰ Menu</button>
