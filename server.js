@@ -118,6 +118,8 @@ async function criarTabelas() {
         origem VARCHAR(50) DEFAULT 'manual',
         data_criacao TIMESTAMP DEFAULT NOW()
       );
+      -- Permite jogos sem usuário vinculado (uso pessoal sem cadastro)
+      ALTER TABLE jogos_salvos ALTER COLUMN usuario_id DROP NOT NULL;
     `);
     console.log('✓ Tabelas verificadas/criadas');
   } catch (e) {
@@ -241,10 +243,10 @@ app.post('/api/concursos', async (req, res) => {
   }
 });
 
-// Buscar último sorteio oficial da Caixa
+// Buscar último sorteio oficial (API pública loteriascaixa-api)
 app.get('/api/concursos/atualizar', async (req, res) => {
   try {
-    const dados = await buscarUltimoSorteioCaixa();
+    const dados = await buscarSorteioOnline(null);
     if (!dados) return res.status(502).json({ erro: 'Não foi possível buscar o sorteio oficial agora. Use a importação manual.' });
 
     await pool.query(
@@ -257,14 +259,65 @@ app.get('/api/concursos/atualizar', async (req, res) => {
   }
 });
 
-function buscarUltimoSorteioCaixa() {
+// Buscar um concurso específico online (não salva, apenas retorna)
+app.get('/api/concursos/buscar/:numero', async (req, res) => {
+  try {
+    const numero = parseInt(req.params.numero);
+    if (!numero || numero < 1) return res.status(400).json({ erro: 'Número de concurso inválido' });
+    const dados = await buscarSorteioOnline(numero);
+    if (!dados) return res.status(404).json({ erro: `Concurso ${numero} não encontrado online` });
+    res.json({ concurso: dados });
+  } catch (e) {
+    res.status(500).json({ erro: 'Erro ao buscar concurso: ' + e.message });
+  }
+});
+
+// Importar um intervalo de concursos online e salvar no banco
+app.post('/api/concursos/importar-intervalo', async (req, res) => {
+  try {
+    let { inicio, fim } = req.body;
+    inicio = parseInt(inicio);
+    fim = parseInt(fim);
+    if (!inicio || !fim || inicio > fim) return res.status(400).json({ erro: 'Intervalo inválido' });
+    const total = fim - inicio + 1;
+    if (total > 100) return res.status(400).json({ erro: 'Máximo de 100 concursos por vez' });
+
+    const salvos = [];
+    const erros = [];
+    for (let n = inicio; n <= fim; n++) {
+      try {
+        const dados = await buscarSorteioOnline(n);
+        if (dados) {
+          await pool.query(
+            'INSERT INTO concursos (numero, data_sorteio, dezenas) VALUES ($1, $2, $3) ON CONFLICT (numero) DO UPDATE SET data_sorteio = EXCLUDED.data_sorteio, dezenas = EXCLUDED.dezenas',
+            [dados.numero, dados.data, JSON.stringify(dados.dezenas)]
+          );
+          salvos.push(dados.numero);
+        } else {
+          erros.push(n);
+        }
+      } catch {
+        erros.push(n);
+      }
+    }
+    res.json({ ok: true, salvos, total_salvos: salvos.length, erros, total_erros: erros.length });
+  } catch (e) {
+    res.status(500).json({ erro: 'Erro ao importar intervalo: ' + e.message });
+  }
+});
+
+// Busca sorteio online via API pública (último se numero=null)
+function buscarSorteioOnline(numero) {
   return new Promise((resolve) => {
+    const path = numero
+      ? `/api/lotofacil/${numero}`
+      : '/api/lotofacil/latest';
     const options = {
-      hostname: 'servicebus2.caixa.gov.br',
-      path: '/portaldeloterias/api/lotofacil',
+      hostname: 'loteriascaixa-api.herokuapp.com',
+      path,
       method: 'GET',
       headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' },
-      timeout: 8000
+      timeout: 10000
     };
     const r = https.request(options, (resp) => {
       let body = '';
@@ -272,10 +325,10 @@ function buscarUltimoSorteioCaixa() {
       resp.on('end', () => {
         try {
           const json = JSON.parse(body);
-          const dezenas = (json.dezenasSorteadas || json.dezenas || []).map(Number).sort((a, b) => a - b);
+          const dezenas = (json.dezenas || json.dezenasSorteadas || []).map(Number).sort((a, b) => a - b);
           if (dezenas.length !== 15) return resolve(null);
-          const data = json.dataApuracao ? json.dataApuracao.split('T')[0] : null;
-          resolve({ numero: parseInt(json.numero), data, dezenas });
+          const data = json.data ? parseDataBR(json.data) : null;
+          resolve({ numero: parseInt(json.concurso || json.numero), data, dezenas });
         } catch {
           resolve(null);
         }
@@ -285,6 +338,14 @@ function buscarUltimoSorteioCaixa() {
     r.on('timeout', () => { r.destroy(); resolve(null); });
     r.end();
   });
+}
+
+// Converte "DD/MM/YYYY" -> "YYYY-MM-DD"
+function parseDataBR(str) {
+  if (!str || typeof str !== 'string') return null;
+  const parts = str.split('/');
+  if (parts.length !== 3) return str.split('T')[0] || null;
+  return `${parts[2]}-${parts[1]}-${parts[0]}`;
 }
 
 // =============================================================
@@ -329,6 +390,54 @@ app.post('/api/conferir', async (req, res) => {
     });
 
     res.json({ sorteio, concurso: concursoInfo, resultados, resumo, totalJogos: resultados.length });
+  } catch (e) {
+    res.status(500).json({ erro: 'Erro ao conferir: ' + e.message });
+  }
+});
+
+// =============================================================
+//  CONFERIR UM JOGO CONTRA TODOS OS CONCURSOS
+// =============================================================
+app.post('/api/conferir-todos', async (req, res) => {
+  try {
+    const { dezenas } = req.body;
+    if (!validarDezenas(dezenas)) return res.status(400).json({ erro: 'Jogo inválido (15 dezenas de 1 a 25)' });
+    const jogo = ordenarDezenas(dezenas);
+    const jogoSet = new Set(jogo);
+
+    const result = await pool.query('SELECT numero, data_sorteio, dezenas FROM concursos ORDER BY numero DESC');
+    if (!result.rows.length) return res.status(404).json({ erro: 'Nenhum concurso cadastrado. Atualize os sorteios primeiro.' });
+
+    const resultados = result.rows.map(c => {
+      const acertos = c.dezenas.filter(n => jogoSet.has(n)).length;
+      return { numero: c.numero, data_sorteio: c.data_sorteio, acertos };
+    });
+
+    // Resumo por faixa
+    const resumo = { 11: 0, 12: 0, 13: 0, 14: 0, 15: 0, nenhum: 0 };
+    resultados.forEach(r => {
+      if (r.acertos >= 11) resumo[r.acertos]++;
+      else resumo.nenhum++;
+    });
+
+    // Pontuou = total de concursos com 11+ acertos
+    const pontuou = resultados.filter(r => r.acertos >= 11);
+    // Quantos concursos atrás foi a última pontuação (11+)
+    let concursosAtras = null;
+    if (pontuou.length) {
+      const maisRecente = pontuou[0]; // já em ordem DESC
+      const idx = resultados.findIndex(r => r.numero === maisRecente.numero);
+      concursosAtras = idx;
+    }
+
+    res.json({
+      jogo,
+      resultados,
+      resumo,
+      total_concursos: resultados.length,
+      total_pontuou: pontuou.length,
+      concursos_atras: concursosAtras
+    });
   } catch (e) {
     res.status(500).json({ erro: 'Erro ao conferir: ' + e.message });
   }
@@ -587,11 +696,10 @@ app.get('/api/estatisticas', async (req, res) => {
 //  JOGOS SALVOS (requer auth)
 // =============================================================
 
-app.get('/api/jogos', authMiddleware, async (req, res) => {
+app.get('/api/jogos', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, nome, dezenas, origem, data_criacao FROM jogos_salvos WHERE usuario_id = $1 ORDER BY data_criacao DESC',
-      [req.usuario.id]
+      'SELECT id, nome, dezenas, origem, data_criacao FROM jogos_salvos ORDER BY data_criacao DESC'
     );
     res.json({ jogos: result.rows });
   } catch (e) {
@@ -599,14 +707,14 @@ app.get('/api/jogos', authMiddleware, async (req, res) => {
   }
 });
 
-app.post('/api/jogos', authMiddleware, async (req, res) => {
+app.post('/api/jogos', async (req, res) => {
   try {
     const { nome, dezenas, origem } = req.body;
     if (!validarDezenas(dezenas)) return res.status(400).json({ erro: 'Jogo inválido (15 dezenas de 1 a 25)' });
 
     const result = await pool.query(
-      'INSERT INTO jogos_salvos (usuario_id, nome, dezenas, origem) VALUES ($1, $2, $3, $4) RETURNING id, nome, dezenas, origem, data_criacao',
-      [req.usuario.id, nome || 'Sem nome', JSON.stringify(ordenarDezenas(dezenas)), origem || 'manual']
+      'INSERT INTO jogos_salvos (nome, dezenas, origem) VALUES ($1, $2, $3) RETURNING id, nome, dezenas, origem, data_criacao',
+      [nome || 'Sem nome', JSON.stringify(ordenarDezenas(dezenas)), origem || 'manual']
     );
     res.json({ jogo: result.rows[0] });
   } catch (e) {
@@ -614,9 +722,9 @@ app.post('/api/jogos', authMiddleware, async (req, res) => {
   }
 });
 
-app.delete('/api/jogos/:id', authMiddleware, async (req, res) => {
+app.delete('/api/jogos/:id', async (req, res) => {
   try {
-    await pool.query('DELETE FROM jogos_salvos WHERE id = $1 AND usuario_id = $2', [req.params.id, req.usuario.id]);
+    await pool.query('DELETE FROM jogos_salvos WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
   } catch (e) {
     res.status(500).json({ erro: 'Erro ao excluir jogo: ' + e.message });

@@ -3,49 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meus Jogos · Lotofácil Pro</title>
+<title>Meus Jogos · Lotofácil</title>
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body data-page="meus-jogos">
-<script>if(!requireAuth()){}</script>
-<div class="app-shell">
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark">L</span><span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span></a>
-    <div class="sidebar-scroll">
-      <div class="nav-section"><div class="nav-section-title">Principal</div>
-        <a class="nav-link" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
-        <a class="nav-link" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
-        <a class="nav-link" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
-        <a class="nav-link" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
-        <a class="nav-link" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
-        <a class="nav-link active" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
-        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
-      </div>
+<div id="site-header"></div>
+<div class="site-main">
+  <div class="page-title">Meus Jogos</div>
+  <div class="page-sub">Jogos salvos e gerados</div>
+  <div id="alert-area"></div>
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">Jogos Salvos</div><div class="card-sub" id="jogos-count">—</div></div>
+      <button class="btn btn-outline btn-sm" onclick="carregarJogos()">🔄 Atualizar</button>
     </div>
-    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
-  </aside>
-  <div class="main">
-    <div class="topbar">
-      <button class="menu-toggle" id="menu-toggle">☰</button>
-      <div><div class="topbar-title">Meus Jogos</div><div class="topbar-sub">Jogos salvos e gerados</div></div>
-      <div class="topbar-right"><button class="btn btn-outline btn-sm" onclick="imprimirTodos()">🖨️ Imprimir todos</button></div>
-    </div>
-    <div class="content">
-      <div id="alert-area"></div>
-      <div class="card">
-        <div class="card-header">
-          <div><div class="card-title">Jogos Salvos</div><div class="card-sub" id="jogos-count">—</div></div>
-          <button class="btn btn-outline btn-sm" onclick="carregarJogos()">🔄 Atualizar</button>
-        </div>
-        <div id="lista-jogos"></div>
-      </div>
-    </div>
+    <div id="lista-jogos"></div>
   </div>
 </div>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/meus-jogos.js"></script>
+<script>injectLayout('meus-jogos');</script>
+</body>
+</html>

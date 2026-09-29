@@ -3,87 +3,64 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fechamentos · Lotofácil Pro</title>
+<title>Fechamentos · Lotofácil</title>
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body data-page="fechamentos">
-<script>if(!requireAuth()){}</script>
-<div class="app-shell">
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark">L</span><span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span></a>
-    <div class="sidebar-scroll">
-      <div class="nav-section"><div class="nav-section-title">Principal</div>
-        <a class="nav-link" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
-        <a class="nav-link" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
+<div id="site-header"></div>
+<div class="site-main">
+  <div class="page-title">Fechamentos Matemáticos</div>
+  <div class="page-sub">Desdobramentos com garantia de acertos</div>
+  <div id="alert-area"></div>
+  <div class="grid grid-2">
+    <div>
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Dezenas do Fechamento</div><div class="card-sub">Selecione de 15 a 22 dezenas</div></div>
+          <span class="badge badge-purple" id="fech-count">0 selecionadas</span>
+        </div>
+        <div class="number-grid" id="grid-fech" style="margin-bottom:16px"></div>
+        <div class="form-group">
+          <label class="form-label">Garantia</label>
+          <select class="form-select" id="sel-garantia">
+            <option value="15">15 acertos (fechamento total — todas as combinações)</option>
+            <option value="14">14 acertos garantidos (reduzido)</option>
+            <option value="13">13 acertos garantidos (reduzido)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Limite máximo de jogos</label>
+          <input type="number" class="form-input" id="f-limite" value="5000" min="1" max="20000">
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="btn-fech" onclick="gerarFechamento()">🔢 GERAR FECHAMENTO</button>
       </div>
-      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
-        <a class="nav-link" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
-        <a class="nav-link active" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
-        <a class="nav-link" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
-        <a class="nav-link" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
-        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px">Como funciona?</div>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.7">
+          <strong>15 acertos (Total):</strong> gera todas as combinações possíveis de 15 dezenas dentro das selecionadas.
+          Garante 15 acertos se as 15 sorteadas estiverem entre as escolhidas.<br><br>
+          <strong>14 acertos:</strong> gera um conjunto reduzido que garante no mínimo 14 acertos
+          se as 15 sorteadas estiverem entre as dezenas escolhidas.<br><br>
+          <strong>13 acertos:</strong> garante no mínimo 13 acertos com ainda menos jogos.<br><br>
+          <em>Quanto mais dezenas selecionar, mais jogos serão necessários.</em>
+        </p>
       </div>
     </div>
-    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
-  </aside>
-  <div class="main">
-    <div class="topbar">
-      <button class="menu-toggle" id="menu-toggle">☰</button>
-      <div><div class="topbar-title">Fechamentos Matemáticos</div><div class="topbar-sub">Desdobramentos com garantia de acertos</div></div>
-    </div>
-    <div class="content">
-      <div id="alert-area"></div>
-      <div class="grid grid-2">
-        <div>
-          <div class="card">
-            <div class="card-header"><div><div class="card-title">Dezenas do Fechamento</div><div class="card-sub">Selecione de 15 a 22 dezenas</div></div>
-              <span class="badge badge-green" id="fech-count">0 selecionadas</span>
-            </div>
-            <div class="number-grid" id="grid-fech" style="margin-bottom:16px"></div>
-            <div class="form-group">
-              <label class="form-label">Garantia</label>
-              <select class="form-select" id="sel-garantia">
-                <option value="15">15 acertos (fechamento total — todas as combinações)</option>
-                <option value="14">14 acertos garantidos (reduzido)</option>
-                <option value="13">13 acertos garantidos (reduzido)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Limite máximo de jogos</label>
-              <input type="number" class="form-input" id="f-limite" value="5000" min="1" max="20000">
-            </div>
-            <button class="btn btn-primary btn-block btn-lg" id="btn-fech" onclick="gerarFechamento()">🔢 GERAR FECHAMENTO</button>
-          </div>
-          <div class="card">
-            <div class="card-title" style="margin-bottom:10px">Como funciona?</div>
-            <p style="font-size:14px;color:var(--text-muted);line-height:1.7">
-              <strong>15 acertos (Total):</strong> gera todas as combinações possíveis de 15 dezenas dentro das selecionadas.
-              Garante 15 acertos se as 15 sorteadas estiverem entre as escolhidas.<br><br>
-              <strong>14 acertos:</strong> gera um conjunto reduzido que garante no mínimo 14 acertos
-              se as 15 sorteadas estiverem entre as dezenas escolhidas.<br><br>
-              <strong>13 acertos:</strong> garante no mínimo 13 acertos com ainda menos jogos.<br><br>
-              <em>Quanto mais dezenas selecionar, mais jogos serão necessários.</em>
-            </p>
+    <div>
+      <div class="card" id="fech-result" style="display:none">
+        <div class="card-header">
+          <div><div class="card-title">Fechamento Gerado</div><div class="card-sub" id="fech-info"></div></div>
+          <div class="no-print">
+            <button class="btn btn-outline btn-sm" onclick="salvarFechamento()">💾 Salvar</button>
+            <button class="btn btn-outline btn-sm" onclick="imprimirFechamento()">🖨️ Imprimir</button>
           </div>
         </div>
-        <div>
-          <div class="card" id="fech-result" style="display:none">
-            <div class="card-header">
-              <div><div class="card-title">Fechamento Gerado</div><div class="card-sub" id="fech-info"></div></div>
-              <div class="no-print">
-                <button class="btn btn-outline btn-sm" onclick="salvarFechamento()">💾 Salvar</button>
-                <button class="btn btn-outline btn-sm" onclick="imprimirFechamento()">🖨️ Imprimir</button>
-              </div>
-            </div>
-            <div id="fech-area"></div>
-          </div>
-        </div>
+        <div id="fech-area"></div>
       </div>
     </div>
   </div>
 </div>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/fechamentos.js"></script>
+<script>injectLayout('ferramentas');</script>
+</body>
+</html>

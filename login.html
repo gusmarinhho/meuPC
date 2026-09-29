@@ -3,102 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entrar · Plataforma Lotofácil</title>
+<title>Lotofácil · MazuSoft</title>
 <link rel="stylesheet" href="assets/css/app.css">
-</head>
-<body>
-<div class="auth-wrap">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <div class="auth-logo-mark">L</div>
-      <div class="auth-title">Lotofácil Pro</div>
-      <div class="auth-sub">Simulador, Conferidor e Geradores</div>
-    </div>
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Entrar</div>
-      <div class="auth-tab" id="tab-cadastro" onclick="switchTab('cadastro')">Cadastrar</div>
-    </div>
-    <div id="alert-area"></div>
-    <!-- Login -->
-    <form id="form-login" onsubmit="return fazerLogin(event)">
-      <div class="form-group">
-        <label class="form-label">E-mail</label>
-        <input type="email" class="form-input" id="login-email" required placeholder="seu@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Senha</label>
-        <input type="password" class="form-input" id="login-senha" required placeholder="••••••">
-      </div>
-      <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-login">Entrar</button>
-    </form>
-    <!-- Cadastro -->
-    <form id="form-cadastro" onsubmit="return fazerCadastro(event)" style="display:none">
-      <div class="form-group">
-        <label class="form-label">Nome</label>
-        <input type="text" class="form-input" id="cad-nome" required placeholder="Seu nome">
-      </div>
-      <div class="form-group">
-        <label class="form-label">E-mail</label>
-        <input type="email" class="form-input" id="cad-email" required placeholder="seu@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Senha</label>
-        <input type="password" class="form-input" id="cad-senha" required minlength="6" placeholder="Mínimo 6 caracteres">
-      </div>
-      <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-cad">Criar conta</button>
-    </form>
-  </div>
-</div>
 <script src="assets/js/app.js"></script>
 <script>
-function switchTab(tab) {
-  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-  document.getElementById('tab-cadastro').classList.toggle('active', tab === 'cadastro');
-  document.getElementById('form-login').style.display = tab === 'login' ? '' : 'none';
-  document.getElementById('form-cadastro').style.display = tab === 'cadastro' ? '' : 'none';
-  document.getElementById('alert-area').innerHTML = '';
-}
-
-async function fazerLogin(e) {
-  e.preventDefault();
-  const btn = el('btn-login');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Entrando...';
-  try {
-    const data = await API.post('/api/auth/login', {
-      email: el('login-email').value.trim(),
-      senha: el('login-senha').value
-    });
-    localStorage.setItem('lotofacil_token', data.token);
-    localStorage.setItem('lotofacil_user', JSON.stringify(data.usuario));
-    window.location.href = 'index.html';
-  } catch (err) {
-    document.getElementById('alert-area').innerHTML = alertBox(err.message, 'error');
-    btn.disabled = false; btn.textContent = 'Entrar';
-  }
-  return false;
-}
-
-async function fazerCadastro(e) {
-  e.preventDefault();
-  const btn = el('btn-cad');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Criando...';
-  try {
-    const data = await API.post('/api/auth/cadastro', {
-      nome: el('cad-nome').value.trim(),
-      email: el('cad-email').value.trim(),
-      senha: el('cad-senha').value
-    });
-    localStorage.setItem('lotofacil_token', data.token);
-    localStorage.setItem('lotofacil_user', JSON.stringify(data.usuario));
-    window.location.href = 'index.html';
-  } catch (err) {
-    document.getElementById('alert-area').innerHTML = alertBox(err.message, 'error');
-    btn.disabled = false; btn.textContent = 'Criar conta';
-  }
-  return false;
-}
-
-if (API.isAuthed()) window.location.href = 'index.html';
+// Sem cadastro — uso pessoal. Redireciona direto para os resultados.
+window.location.href = 'index.html';
 </script>
-</body>
+</head>
+<body></body>
 </html>

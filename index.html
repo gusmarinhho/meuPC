@@ -3,103 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painel · Lotofácil Pro</title>
+<title>Resultados dos Sorteios · Lotofácil</title>
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/app.js"></script>
 </head>
-<body data-page="index">
-<script>if(!requireAuth()){}</script>
-<div class="app-shell">
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">L</span>
-      <span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span>
-    </a>
-    <div class="sidebar-scroll">
-      <div class="nav-section"><div class="nav-section-title">Principal</div>
-        <a class="nav-link active" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
-        <a class="nav-link" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
-        <a class="nav-link" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
-        <a class="nav-link" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
-        <a class="nav-link" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
-        <a class="nav-link" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
-        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
-      </div>
-    </div>
-    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
-  </aside>
-  <div class="main">
-    <div class="topbar">
-      <button class="menu-toggle" id="menu-toggle">☰</button>
-      <div><div class="topbar-title">Painel</div><div class="topbar-sub">Visão geral da Lotofácil</div></div>
-      <div class="topbar-right"><button class="btn btn-outline btn-sm" onclick="atualizarSorteio()">🔄 Atualizar Sorteio</button></div>
-    </div>
-    <div class="content">
-      <div id="alert-area"></div>
-      <div class="grid grid-4" style="margin-bottom:20px">
-        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-info"><div class="stat-value" id="stat-ultimo">--</div><div class="stat-label">Último Concurso</div></div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:rgba(255,193,7,.12);color:var(--gold)">📅</div><div class="stat-info"><div class="stat-value" id="stat-data">--</div><div class="stat-label">Data Sorteio</div></div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:rgba(64,196,255,.12);color:var(--info)">🎰</div><div class="stat-info"><div class="stat-value" id="stat-jogos">--</div><div class="stat-label">Jogos Salvos</div></div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:rgba(179,136,255,.12);color:var(--purple)">📚</div><div class="stat-info"><div class="stat-value" id="stat-concursos">--</div><div class="stat-label">Concursos no BD</div></div></div>
-      </div>
-      <div class="grid grid-2">
-        <div class="card">
-          <div class="card-header"><div><div class="card-title">Último Sorteio</div><div class="card-sub" id="ultimo-concurso-info">—</div></div></div>
-          <div id="ultimo-sorteio" style="margin-bottom:16px"></div>
-          <a href="simulador.html" class="btn btn-primary btn-block">Conferir meus jogos →</a>
-        </div>
-        <div class="card">
-          <div class="card-header"><div><div class="card-title">Ações Rápidas</div></div></div>
-          <a href="gerador.html" class="btn btn-outline btn-block" style="margin-bottom:8px">⚙️ Gerar jogos com filtros</a>
-          <a href="fechamentos.html" class="btn btn-outline btn-block" style="margin-bottom:8px">🔢 Criar fechamento matemático</a>
-          <a href="estatisticas.html" class="btn btn-outline btn-block" style="margin-bottom:8px">📈 Ver estatísticas avançadas</a>
-          <a href="meus-jogos.html" class="btn btn-outline btn-block">💾 Gerenciar jogos salvos</a>
-        </div>
-      </div>
-    </div>
+<body data-page="resultados">
+<div id="site-header"></div>
+<div class="site-main">
+  <div class="page-title">Todos os Resultados da Lotofácil</div>
+  <div class="page-sub">MazuSoft — consulte e importe os sorteios oficiais</div>
+  <div id="alert-area"></div>
+
+  <div class="controls-bar">
+    <label>Concursos:</label>
+    <input type="number" class="form-input" id="filtro-inicio" style="width:90px" min="1">
+    <label>a</label>
+    <input type="number" class="form-input" id="filtro-fim" style="width:90px" min="1">
+    <button class="btn btn-primary btn-sm" onclick="aplicarFiltro()">OK</button>
+    <span id="contagem" style="color:var(--text-muted);font-size:12px"></span>
+    <label style="margin-left:auto">Ordem:</label>
+    <select class="form-select" id="sel-ordem" style="width:140px" onchange="renderCards()">
+      <option value="desc">Decrescente</option>
+      <option value="asc">Crescente</option>
+    </select>
+    <button class="btn btn-outline btn-sm" onclick="atualizarOnline()">🔄 Atualizar Online</button>
+    <button class="btn btn-outline btn-sm" onclick="exportarTXT()">📄 Exportar TXT</button>
+    <button class="btn btn-outline btn-sm" onclick="exportarExcel()">📊 Exportar Excel</button>
+  </div>
+
+  <div class="grid grid-auto" id="cards-area">
+    <div class="empty-state"><div class="spinner" style="margin:0 auto 12px"></div>Carregando concursos...</div>
   </div>
 </div>
-<script>
-async function carregarPainel() {
-  try {
-    const [ultimo, concursos, jogos] = await Promise.all([
-      API.get('/api/concursos/ultimo'),
-      API.get('/api/concursos?limite=1'),
-      API.get('/api/jogos').catch(() => ({ jogos: [] }))
-    ]);
-    if (ultimo.concurso) {
-      const c = ultimo.concurso;
-      el('stat-ultimo').textContent = '#' + c.numero;
-      el('stat-data').textContent = fmt(c.data_sorteio);
-      el('ultimo-concurso-info').textContent = `Concurso ${c.numero} — ${fmt(c.data_sorteio)}`;
-      el('ultimo-sorteio').innerHTML = `<div class="game-numbers" style="margin-bottom:8px">${renderNumbers(c.dezenas, { drawn: c.dezenas })}</div>`;
-    } else {
-      el('ultimo-sorteio').innerHTML = '<div class="empty-state">Nenhum concurso cadastrado. Clique em "Atualizar Sorteio".</div>';
-    }
-    el('stat-jogos').textContent = jogos.jogos ? jogos.jogos.length : 0;
-    el('stat-concursos').textContent = concursos.concursos ? concursos.concursos.length : 0;
-  } catch (err) {
-    showError('alert-area', err.message);
-  }
-}
-
-async function atualizarSorteio() {
-  el('alert-area').innerHTML = alertBox('Buscando último sorteio oficial...', 'info');
-  try {
-    const data = await API.get('/api/concursos/atualizar');
-    el('alert-area').innerHTML = alertBox(`Sorteio atualizado! Concurso ${data.concurso.numero}.`, 'success');
-    carregarPainel();
-  } catch (err) {
-    el('alert-area').innerHTML = '<div class="alert alert-warning">Não foi possível buscar o sorteio oficial agora. <a href="simulador.html">Importe o sorteio manualmente no Simulador →</a></div>';
-  }
-}
-
-carregarPainel();
-</script>
+<script src="assets/js/resultados.js"></script>
 </body>
 </html>

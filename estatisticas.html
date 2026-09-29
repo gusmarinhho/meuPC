@@ -3,71 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estatísticas · Lotofácil Pro</title>
+<title>Tabelas · Lotofácil</title>
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body data-page="estatisticas">
-<script>if(!requireAuth()){}</script>
-<div class="app-shell">
-  <div class="overlay" id="overlay"></div>
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark">L</span><span class="brand-text"><span class="brand-name">LOTOFÁCIL</span><span class="brand-sub">PRO</span></span></a>
-    <div class="sidebar-scroll">
-      <div class="nav-section"><div class="nav-section-title">Principal</div>
-        <a class="nav-link" href="index.html"><span class="nav-icon">📊</span><span>Painel</span></a>
-        <a class="nav-link" href="simulador.html"><span class="nav-icon">🎯</span><span>Simulador & Conferidor</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Ferramentas</div>
-        <a class="nav-link" href="gerador.html"><span class="nav-icon">⚙️</span><span>Gerador com Filtros</span></a>
-        <a class="nav-link" href="fechamentos.html"><span class="nav-icon">🔢</span><span>Fechamentos</span></a>
-        <a class="nav-link active" href="estatisticas.html"><span class="nav-icon">📈</span><span>Estatísticas</span></a>
-      </div>
-      <div class="nav-section"><div class="nav-section-title">Minha Conta</div>
-        <a class="nav-link" href="meus-jogos.html"><span class="nav-icon">💾</span><span>Meus Jogos</span></a>
-        <a class="nav-link" href="#" onclick="API.logout();return false"><span class="nav-icon">🚪</span><span>Sair</span></a>
-      </div>
+<div id="site-header"></div>
+<div class="site-main">
+  <div class="page-title">Tabelas e Estatísticas</div>
+  <div class="page-sub">Análise histórica da Lotofácil</div>
+  <div id="alert-area"></div>
+  <div class="grid grid-4" style="margin-bottom:18px">
+    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-info"><div class="stat-value" id="st-total">--</div><div class="stat-label">Concursos Analisados</div></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:rgba(255,193,7,.12);color:var(--gold-dark)">➕</div><div class="stat-info"><div class="stat-value" id="st-soma-media">--</div><div class="stat-label">Soma Média</div></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:rgba(41,128,185,.12);color:var(--info)">⚖️</div><div class="stat-info"><div class="stat-value" id="st-pares">--</div><div class="stat-label">Pares (média)</div></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:rgba(112,48,160,.12);color:var(--primary)">🔢</div><div class="stat-info"><div class="stat-value" id="st-soma-range">--</div><div class="stat-label">Faixa de Soma</div></div></div>
+  </div>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Dezenas Mais Sorteadas</div></div></div>
+      <div id="mais-sorteadas"></div>
     </div>
-    <div class="sidebar-footer">Logado como <strong id="user-name">—</strong></div>
-  </aside>
-  <div class="main">
-    <div class="topbar">
-      <button class="menu-toggle" id="menu-toggle">☰</button>
-      <div><div class="topbar-title">Estatísticas Avançadas</div><div class="topbar-sub">Análise histórica da Lotofácil</div></div>
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Dezenas Menos Sorteadas</div></div></div>
+      <div id="menos-sorteadas"></div>
     </div>
-    <div class="content">
-      <div id="alert-area"></div>
-      <div class="grid grid-4" style="margin-bottom:20px">
-        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-info"><div class="stat-value" id="st-total">--</div><div class="stat-label">Concursos Analisados</div></div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:rgba(255,193,7,.12);color:var(--gold)">➕</div><div class="stat-info"><div class="stat-value" id="st-soma-media">--</div><div class="stat-label">Soma Média</div></div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:rgba(64,196,255,.12);color:var(--info)">⚖️</div><div class="stat-info"><div class="stat-value" id="st-pares">--</div><div class="stat-label">Pares (média)</div></div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:rgba(179,136,255,.12);color:var(--purple)">🔢</div><div class="stat-info"><div class="stat-value" id="st-soma-range">--</div><div class="stat-label">Faixa de Soma</div></div></div>
-      </div>
-      <div class="grid grid-2">
-        <div class="card">
-          <div class="card-header"><div><div class="card-title">Dezenas Mais Sorteadas</div></div></div>
-          <div id="mais-sorteadas"></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div><div class="card-title">Dezenas Menos Sorteadas</div></div></div>
-          <div id="menos-sorteadas"></div>
-        </div>
-      </div>
-      <div class="grid grid-2">
-        <div class="card">
-          <div class="card-header"><div><div class="card-title">Maior Atraso (dezenas que não saem há mais tempo)</div></div></div>
-          <div id="atrasos"></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div><div class="card-title">Top Pares que Mais Saem Juntos</div></div></div>
-          <div id="top-pares"></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header"><div><div class="card-title">Frequência Completa (todas as 25 dezenas)</div></div></div>
-        <div id="freq-completa"></div>
-      </div>
+  </div>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Maior Atraso (dezenas que não saem há mais tempo)</div></div></div>
+      <div id="atrasos"></div>
     </div>
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Top Pares que Mais Saem Juntos</div></div></div>
+      <div id="top-pares"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div><div class="card-title">Frequência Completa (todas as 25 dezenas)</div></div></div>
+    <div id="freq-completa"></div>
   </div>
 </div>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/estatisticas.js"></script>
+<script>injectLayout('tabelas');</script>
+</body>
+</html>
