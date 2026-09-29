@@ -18,12 +18,12 @@ Plataforma Lotofácil Pro — Simulador/Conferidor, Geradores com Filtros, Fecha
 ## Database Tables
 - `usuarios` (id, nome, email, senha_hash, data_criacao)
 - `concursos` (id, numero, data_sorteio, dezenas JSONB[15], data_criacao) — official draws
-- `jogos_salvos` (id, usuario_id, nome, dezenas JSONB[15], origem, data_criacao) — user saved games
+- `jogos_salvos` (id, usuario_id NULLABLE, nome, dezenas JSONB[15], origem, data_criacao) — saved games (no auth; usuario_id is NULL for personal use)
 
 ## API Structure (server.js)
 - Auth: POST /api/auth/cadastro, /api/auth/login (JWT)
-- Concursos: GET /api/concursos/ultimo, GET /api/concursos, POST /api/concursos (manual import), GET /api/concursos/atualizar (fetch from Caixa API)
-- Conferidor: POST /api/conferir (jogos + concurso_id or dezenas_sorteio → acertos 11-15)
+- Concursos: GET /api/concursos/ultimo, GET /api/concursos, POST /api/concursos (manual import), GET /api/concursos/atualizar (fetch latest from loteriascaixa-api.herokuapp.com), GET /api/concursos/buscar/:numero (single online fetch), POST /api/concursos/importar-intervalo (bulk import range)
+- Conferidor: POST /api/conferir (jogos + concurso_id or dezenas_sorteio → acertos 11-15), POST /api/conferir-todos (one jogo vs all concursos → per-concurso acertos + summary)
 - Gerador: POST /api/gerar (filtros: fixas, excluir, pares, primos, soma → jogos)
 - Fechamentos: POST /api/fechamento (dezenas + garantia 15/14/13 → jogos com cobertura garantida)
 - Estatísticas: GET /api/estatisticas (frequência, atrasos, top pares, soma)
@@ -31,11 +31,14 @@ Plataforma Lotofácil Pro — Simulador/Conferidor, Geradores com Filtros, Fecha
 
 ## Frontend
 - Root `.html` files are the pages (Portuguese LTR, responsive).
-- `assets/css/app.css` — global styles (dark theme, green/gold lottery palette).
-- `assets/js/app.js` — shared helpers (API client, auth guard, number grid, print).
+- `assets/css/app.css` — global styles (light theme, Lotofácil purple #7030a0 + pale-yellow nav #fffdf0).
+- `assets/js/app.js` — shared helpers (API client, top-nav injection via `injectLayout()`, number grid, print). `requireAuth()` is a no-op (no registration — personal use).
+- `assets/js/resultados.js` — index.html page logic (card grid of all draws + online import/export).
 - `assets/js/simulador.js`, `gerador.js`, `fechamentos.js`, `estatisticas.js`, `meus-jogos.js` — page logic.
-- `index.html` — dashboard. `login.html` — auth (login + cadastro).
-- `simulador.html` — main feature: insert games, pull last draw, conference instantly.
+- `index.html` — "Resultados dos Sorteios" (grid of draw cards, image 2). `login.html` — redirects to index (no auth).
+- `simulador.html` — "Montar Jogo e Testar" (3-column: picker | results list | summary, image 1). Conferences one game against ALL concursos via `/api/conferir-todos`.
+- `contato.html` — simple contact page.
+- Top nav tabs: Resultados dos Sorteios, Gerador de Jogos, Montar Jogo e Testar, Tabelas, Ferramentas, Meus Jogos, Contato.
 
 ## Secrets
 - JWT_SECRET (required at boot, generated for development).
